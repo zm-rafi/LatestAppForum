@@ -1,20 +1,33 @@
-import { View, Text,TextInput } from 'react-native'
-import React from 'react'
+import { View, TextInput } from 'react-native';
+import React from 'react';
+
 type TextInputFieldProps = {
-    label?: string;
-    onChangeText?: (text: string) => void,
-    password?: boolean;
-}
-export default function TextInputField({label,onChangeText,password=false}:TextInputFieldProps) {
+  label?: string;
+  value?: string;
+  onChangeText?: (text: string) => void;
+  password?: boolean;
+  editable?: boolean;
+};
+
+export default function TextInputField({
+  label,
+  value ,
+  onChangeText,
+  password = false,
+  editable = true, // ✅ destructured properly
+}: TextInputFieldProps) {
   return (
     <View>
-      {/* <Text>{label}</Text> */}
-      <TextInput placeholder={label} style={styles.textInput}
-      secureTextEntry={password}
-      onChangeText={onChangeText}
+      <TextInput
+        placeholder={label}
+        value={value}
+        style={styles.textInput}
+        secureTextEntry={password}
+        editable={editable}
+        onChangeText={onChangeText}
       />
     </View>
-  )
+  );
 }
 
 const styles = {
@@ -25,7 +38,7 @@ const styles = {
     borderRadius: 8,
     paddingHorizontal: 14,
     fontSize: 16,
-    color: '#000', // Black text for contrast
+    color: '#000',
     backgroundColor: '#fff',
   },
 };

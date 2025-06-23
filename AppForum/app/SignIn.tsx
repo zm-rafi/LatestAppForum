@@ -4,31 +4,40 @@ import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import TextInputField from '@/components/Shared/TextInputField';
 import Button from '@/components/Shared/Button';
 import { useRouter } from 'expo-router';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function SignIn() {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSignIn = async () => {
+  
+
+// ... inside SignIn function
+const handleSignIn = async () => {
   if (!email || !password) {
     Alert.alert('Missing Info', 'Please enter both email and password');
     return;
   }
 
   try {
-    const response = await axios.post('http://10.15.5.45:5000/api/users/login', {
+    const response = await axios.post('http://192.168.0.103:5000/api/users/login', {
       email,
       password,
     });
 
-    Alert.alert('Login Success', `Welcome ${response.data.user.username}`);
+    const user = response.data.user;
+
+    // ✅ Save to AsyncStorage
+    await AsyncStorage.setItem('loggedInUser', JSON.stringify(user));
+
+    Alert.alert('Login Success', `Welcome ${user.username}`);
     router.push('/(tabs)/Home'); // Navigate on successful login
   } catch (error: any) {
     console.error(error.response?.data || error.message);
     Alert.alert('Login Failed', error.response?.data?.error || 'Something went wrong');
   }
 };
+
 
 
   return (
