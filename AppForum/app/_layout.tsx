@@ -13,7 +13,7 @@ export default function RootLayout() {
         headerTitle: ''
       }}
       />
-      <Stack.Screen name='/SignIn'
+      <Stack.Screen name='SignIn'
       options={{
         headerShown: false,
         headerTitle: ''

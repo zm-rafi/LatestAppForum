@@ -25,7 +25,7 @@ const styles = {
     borderRadius: 8,
     paddingHorizontal: 14,
     fontSize: 16,
-    color: '#fff', // White text for contrast
+    color: '#000', // Black text for contrast
     backgroundColor: '#fff',
   },
 };

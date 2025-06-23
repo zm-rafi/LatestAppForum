@@ -78,7 +78,7 @@ export default function SignUp() {
     }
 
     try {
-      const response = await axios.post('http://192.168.0.103:5000/api/users', {
+      const response = await axios.post('http://10.15.5.45:5000/api/users', {
         username: userName,
         email,
         studentId,
