@@ -12,6 +12,8 @@ export default function Profile() {
   const [studentId, setStudentId] = useState('');
   const [image, setImage] = useState('');
   const [isEditing, setIsEditing] = useState(false);
+  const [originalEmail, setOriginalEmail] = useState('');
+
 
   // ✅ Load user from AsyncStorage
   const loadUser = async () => {
@@ -25,6 +27,9 @@ export default function Profile() {
       setEmail(user.email);
       setStudentId(user.studentId);
       setImage(user.image || '');
+      setOriginalEmail(user.email); // fixed identity
+      setEmail(user.email);         // editable input
+
     } catch (error: unknown) {
       const err = error as Error;
       Alert.alert('Error loading profile', err.message);
@@ -38,19 +43,24 @@ export default function Profile() {
 
   const handleSave = async () => {
   try {
-    const response = await axios.put(`http://192.168.0.103:5000/api/users/by-username/${username}`, {
+    const response = await axios.put(`http://192.168.0.103:5000/api/users/by-email/${originalEmail}`, {
       username,
       email,
       studentId,
-      
     });
-    Alert.alert('✅ Profile updated!');
+
+    await AsyncStorage.setItem('loggedInUser', JSON.stringify(response.data));
+
+    Alert.alert('Profile updated!');
     setIsEditing(false);
-  } catch (err) {
-    console.log(err);
+    setOriginalEmail(response.data.email); // update to new email if changed
+  } catch (err: any) {
+    console.error("Update error:", err?.response?.data || err.message);
     Alert.alert('Error updating profile');
   }
 };
+
+
 
 
   return (

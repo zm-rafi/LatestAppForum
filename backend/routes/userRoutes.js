@@ -18,12 +18,12 @@ router.get('/', async (req, res) => {
   const users = await User.find();
   res.json(users);
 });
-// PUT: Update user by username
-// PUT: Update user by username
-router.put('/by-username/:username', async (req, res) => {
+// PUT: Update user by _id
+// PUT: Update user by email
+router.put('/by-email/:email', async (req, res) => {
   try {
     const updatedUser = await User.findOneAndUpdate(
-      { username: req.params.username },
+      { email: req.params.email },
       req.body,
       { new: true }
     );
@@ -37,6 +37,9 @@ router.put('/by-username/:username', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+
+
 
 
 

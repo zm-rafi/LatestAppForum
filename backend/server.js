@@ -4,6 +4,8 @@ const cors = require('cors');
 require('dotenv').config();
 
 const userRoutes = require('./routes/userRoutes');
+const eventRoutes = require('./routes/eventRoutes');
+
 
 const app = express();
 app.use(cors());
@@ -23,3 +25,4 @@ mongoose.connect(process.env.MONGO_URI)
 
 // Routes
 app.use('/api/users', userRoutes);
+app.use('/api/events', eventRoutes);

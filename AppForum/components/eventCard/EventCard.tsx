@@ -9,7 +9,7 @@ import {
 } from '@expo/vector-icons';
 import { getPathDataFromState } from 'expo-router/build/fork/getPathFromState';
 
-type EventCardProps = {
+export type EventCardProps = {
   image: any; // require('./path') or { uri: '...' }
   category: string;
   title: string;
