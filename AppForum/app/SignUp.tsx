@@ -33,17 +33,42 @@ export default function SignUp() {
   const [password, setPassword] = useState<string | undefined>();
 
   const pickImage = async () => {
-    // const result = await ImagePicker.launchImageLibraryAsync({
-    //   mediaTypes: ImagePicker.MediaTypeOptions.Images,
-    //   allowsEditing: true,
-    //   aspect: [1, 1],
-    //   quality: 1,
-    // });
+  const result = await ImagePicker.launchImageLibraryAsync({
+    mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    allowsEditing: true,
+    aspect: [1, 1],
+    quality: 1,
+  });
 
-    // if (!result.canceled) {
-    //   setProfileImage(result.assets[0].uri);
-    // }
-  };
+  if (!result.canceled) {
+    const localUri = result.assets[0].uri;
+    const imageUrl = await uploadToCloudinary(localUri);
+    setProfileImage(imageUrl); // Save URL instead of base64
+  }
+};
+const uploadToCloudinary = async (imageUri: string): Promise<string> => {
+  const data = new FormData();
+  data.append('file', {
+    uri: imageUri,
+    type: 'image/jpeg',
+    name: 'upload.jpg',
+  } as any);
+  data.append('upload_preset', 'ForumApp'); // from Cloudinary
+  data.append('cloud_name', 'dagyix0lw');
+
+  try {
+    const res = await fetch('https://api.cloudinary.com/v1_1/dagyix0lw/image/upload', {
+      method: 'POST',
+      body: data,
+    });
+    const json = await res.json();
+    return json.secure_url;
+  } catch (err) {
+    console.error('Cloudinary Upload Error', err);
+    throw err;
+  }
+};
+
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
