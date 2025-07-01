@@ -102,7 +102,7 @@ const uploadToCloudinary = async (imageUri: string): Promise<string> => {
     }
 
     try {
-      const response = await axios.post('http://192.168.0.103:5000/api/users', {
+      const response = await axios.post('http://192.168.0.154:5000/api/users', {
         username: userName,
         email,
         studentId,

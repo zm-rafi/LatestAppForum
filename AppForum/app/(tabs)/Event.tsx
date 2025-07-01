@@ -32,7 +32,7 @@ export default function Event() {
 
   const fetchEvents = async () => {
     try {
-      const response = await axios.get('http://192.168.0.103:5000/api/events');
+      const response = await axios.get('http://192.168.0.154:5000/api/events');
       setEvents(response.data);
     } catch (err) {
       console.log('Error fetching events:', err);
@@ -100,7 +100,7 @@ export default function Event() {
     };
 
     try {
-      const response = await axios.post('http://192.168.0.103:5000/api/events', newEvent);
+      const response = await axios.post('http://192.168.0.154:5000/api/events', newEvent);
       setEvents((prev) => [response.data, ...prev]);
       setModalVisible(false);
       setForm({ title: '', subtext: '', date: new Date(), time: new Date(), location: '', image: '' });

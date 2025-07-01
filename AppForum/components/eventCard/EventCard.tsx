@@ -7,6 +7,7 @@ import {
   MaterialCommunityIcons,
 } from '@expo/vector-icons';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export type EventCardProps = {
   image: any;
@@ -38,7 +39,7 @@ export default function EventCard({
 
   const fetchAudience = async () => {
     try {
-      const response = await axios.get(`http://192.168.0.103:5000/api/events/${_id}/audience`);
+      const response = await axios.get(`http://192.168.0.154:5000/api/events/${_id}/audience`);
       setAudience(response.data);
       setAudienceVisible(true);
     } catch (err) {
@@ -47,12 +48,22 @@ export default function EventCard({
   };
 
   const registerUser = async () => {
-    const user = {
-      username: 'DemoUser', // Replace with actual registered username
-      studentId: '123456',  // Replace with actual registered student ID
-    };
     try {
-      await axios.post(`http://192.168.0.103:5000/api/events/${_id}/audience`, user);
+      // Get user info from AsyncStorage
+      const userString = await AsyncStorage.getItem('loggedInUser');
+      if (!userString) {
+        alert('User not logged in!');
+        return;
+      }
+      const user = JSON.parse(userString);
+
+      const userData = {
+        username: user.username,
+        studentId: user.studentId,
+        email: user.email,
+      };
+
+      await axios.post(`http://192.168.0.154:5000/api/events/${_id}/audience`, userData);
       alert('Successfully registered!');
     } catch (err) {
       console.error('Registration failed:', err);

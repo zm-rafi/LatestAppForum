@@ -43,7 +43,7 @@ export default function Profile() {
 
   const handleSave = async () => {
   try {
-    const response = await axios.put(`http://192.168.0.103:5000/api/users/by-email/${originalEmail}`, {
+    const response = await axios.put(`http://192.168.0.154:5000/api/users/by-email/${originalEmail}`, {
       username,
       email,
       studentId,

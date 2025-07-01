@@ -15,7 +15,7 @@ export default function Clubs() {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get('http://192.168.0.103:5000/api/users');
+      const res = await axios.get('http://192.168.0.154:5000/api/users');
       setUsers(res.data);
     } catch (err) {
       console.error('Error fetching users:', err);
@@ -29,7 +29,7 @@ export default function Clubs() {
       text: 'Delete',
       onPress: async () => {
         try {
-          await axios.delete(`http://192.168.0.103:5000/api/users/username/${username}`);
+          await axios.delete(`http://192.168.0.154:5000/api/users/username/${username}`);
           setUsers(users.filter((user) => user.username !== username));
           Alert.alert('Success', 'User deleted successfully');
         } catch (err: any) {
