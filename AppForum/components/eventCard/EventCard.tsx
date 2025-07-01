@@ -8,6 +8,9 @@ import {
 } from '@expo/vector-icons';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Constants from 'expo-constants';
+
+const API_BASE_URL = Constants.expoConfig?.extra?.API_BASE_URL || 'http://192.168.0.154:5000';
 
 export type EventCardProps = {
   image: any;
@@ -39,7 +42,7 @@ export default function EventCard({
 
   const fetchAudience = async () => {
     try {
-      const response = await axios.get(`http://192.168.0.154:5000/api/events/${_id}/audience`);
+      const response = await axios.get(`${API_BASE_URL}/api/events/${_id}/audience`);
       setAudience(response.data);
       setAudienceVisible(true);
     } catch (err) {
@@ -63,7 +66,7 @@ export default function EventCard({
         email: user.email,
       };
 
-      await axios.post(`http://192.168.0.154:5000/api/events/${_id}/audience`, userData);
+      await axios.post(`${API_BASE_URL}/api/events/${_id}/audience`, userData);
       alert('Successfully registered!');
     } catch (err) {
       console.error('Registration failed:', err);

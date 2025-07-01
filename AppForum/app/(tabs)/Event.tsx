@@ -15,6 +15,9 @@ import axios from 'axios';
 import EventCard, { EventCardProps } from '../../components/eventCard/EventCard';
 import * as ImagePicker from 'expo-image-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import Constants from 'expo-constants';
+
+const API_BASE_URL = Constants.expoConfig?.extra?.API_BASE_URL || 'http://192.168.0.154:5000';
 
 export default function Event() {
   const [events, setEvents] = useState<EventCardProps[]>([]);
@@ -32,7 +35,7 @@ export default function Event() {
 
   const fetchEvents = async () => {
     try {
-      const response = await axios.get('http://192.168.0.154:5000/api/events');
+      const response = await axios.get(`${API_BASE_URL}/api/events`);
       setEvents(response.data);
     } catch (err) {
       console.log('Error fetching events:', err);
@@ -100,7 +103,7 @@ export default function Event() {
     };
 
     try {
-      const response = await axios.post('http://192.168.0.154:5000/api/events', newEvent);
+      const response = await axios.post(`${API_BASE_URL}/api/events`, newEvent);
       setEvents((prev) => [response.data, ...prev]);
       setModalVisible(false);
       setForm({ title: '', subtext: '', date: new Date(), time: new Date(), location: '', image: '' });

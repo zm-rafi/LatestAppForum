@@ -13,9 +13,12 @@ import {
 import * as ImagePicker from 'expo-image-picker';
 import { router } from 'expo-router';
 import axios from 'axios';
+import Constants from 'expo-constants';
 
 import Button from '@/components/Shared/Button';
 import TextInputField from '@/components/Shared/TextInputField';
+
+const API_BASE_URL = Constants.expoConfig?.extra?.API_BASE_URL || 'http://192.168.0.154:5000';
 
 const showToast = (msg: string) => {
   if (Platform.OS === 'android') {
@@ -102,7 +105,7 @@ const uploadToCloudinary = async (imageUri: string): Promise<string> => {
     }
 
     try {
-      const response = await axios.post('http://192.168.0.154:5000/api/users', {
+      const response = await axios.post(`${API_BASE_URL}/api/users`, {
         username: userName,
         email,
         studentId,

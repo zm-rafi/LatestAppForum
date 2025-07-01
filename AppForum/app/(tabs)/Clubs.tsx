@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, Alert } from 'react-native';
 import axios from 'axios';
+import Constants from 'expo-constants';
 
 interface User {
   _id: string;
@@ -10,12 +11,14 @@ interface User {
   image: string;
 }
 
+const API_BASE_URL = Constants.expoConfig?.extra?.API_BASE_URL || 'http://192.168.0.154:5000';
+
 export default function Clubs() {
   const [users, setUsers] = useState<User[]>([]);
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get('http://192.168.0.154:5000/api/users');
+      const res = await axios.get(`${API_BASE_URL}/api/users`);
       setUsers(res.data);
     } catch (err) {
       console.error('Error fetching users:', err);
@@ -23,25 +26,24 @@ export default function Clubs() {
   };
 
   const deleteUser = async (username: string) => {
-  Alert.alert('Confirm Delete', `Are you sure you want to delete ${username}?`, [
-    { text: 'Cancel' },
-    {
-      text: 'Delete',
-      onPress: async () => {
-        try {
-          await axios.delete(`http://192.168.0.154:5000/api/users/username/${username}`);
-          setUsers(users.filter((user) => user.username !== username));
-          Alert.alert('Success', 'User deleted successfully');
-        } catch (err: any) {
-          console.error('Delete failed:', err.response?.data || err.message);
-          Alert.alert('Error', err.response?.data?.error || 'Delete failed');
-        }
+    Alert.alert('Confirm Delete', `Are you sure you want to delete ${username}?`, [
+      { text: 'Cancel' },
+      {
+        text: 'Delete',
+        onPress: async () => {
+          try {
+            await axios.delete(`${API_BASE_URL}/api/users/username/${username}`);
+            setUsers(users.filter((user) => user.username !== username));
+            Alert.alert('Success', 'User deleted successfully');
+          } catch (err: any) {
+            console.error('Delete failed:', err.response?.data || err.message);
+            Alert.alert('Error', err.response?.data?.error || 'Delete failed');
+          }
+        },
+        style: 'destructive',
       },
-      style: 'destructive',
-    },
-  ]);
-};
-
+    ]);
+  };
 
   useEffect(() => {
     fetchUsers();
@@ -56,9 +58,8 @@ export default function Clubs() {
         <Text style={styles.id}>ID: {item.studentId}</Text>
       </View>
       <TouchableOpacity onPress={() => deleteUser(item.username)} style={styles.deleteButton}>
-  <Text style={styles.deleteText}>Delete</Text>
-</TouchableOpacity>
-
+        <Text style={styles.deleteText}>Delete</Text>
+      </TouchableOpacity>
     </View>
   );
 

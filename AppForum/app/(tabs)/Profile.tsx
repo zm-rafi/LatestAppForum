@@ -4,6 +4,9 @@ import TextInputField from '@/components/Shared/TextInputField';
 import Button from '@/components/Shared/Button';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Constants from 'expo-constants';
+
+const API_BASE_URL = Constants.expoConfig?.extra?.API_BASE_URL || 'http://192.168.0.154:5000';
 
 export default function Profile() {
   const [userId, setUserId] = useState('');
@@ -43,7 +46,7 @@ export default function Profile() {
 
   const handleSave = async () => {
   try {
-    const response = await axios.put(`http://192.168.0.154:5000/api/users/by-email/${originalEmail}`, {
+    const response = await axios.put(`${API_BASE_URL}/api/users/by-email/${originalEmail}`, {
       username,
       email,
       studentId,
