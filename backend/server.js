@@ -23,6 +23,8 @@ mongoose.connect(process.env.MONGO_URI)
     console.error('MongoDB connection error:', err.message);
   });
 
+
+
 // Routes
 app.use('/api/users', userRoutes);
 app.use('/api/events', eventRoutes);
